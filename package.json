@@ -1,0 +1,17 @@
+{
+  "name": "slack-gameshow-cloud-functions",
+  "version": "1.0.0",
+  "description": "Gameshow app for Slack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "gameshow"
+  ],
+  "author": "Dinusha Bodhinayake",
+  "license": "MIT",
+  "dependencies": {
+    "config": "^3.2.2"
+  }
+}
