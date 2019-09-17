@@ -4,7 +4,8 @@
   "description": "Gameshow app for Slack",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "functions-framework --target=startPost",
+    "test": "NODE_ENV=test mocha --exit"
   },
   "keywords": [
     "gameshow"
@@ -13,5 +14,10 @@
   "license": "MIT",
   "dependencies": {
     "config": "^3.2.2"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0",
+    "sinon": "^7.4.2"
   }
 }
