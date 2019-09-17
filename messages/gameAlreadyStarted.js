@@ -1,9 +1,8 @@
 'use strict';
 
 /**
- * @module welcomeMessage
- * @description Message displayed to host of the gameshow when they start a new game via
- * the Slack slash command.
+ * @module gameAlreadyStarted
+ * @description Message displayed to host of the gameshow when a gameshow has already been started.
  */
 
 module.exports = {
@@ -12,15 +11,7 @@ module.exports = {
             type: "section",
             text: {
                 type: "plain_text",
-                text: "Welcome to Gameshow! The app that allows you to host your very own quiz show!",
-                emoji: true
-            }
-        },
-        {
-            type: "section",
-            text: {
-                type: "plain_text",
-                text: "Click the Start Game button below to start the game with everyone in this channel!",
+                text: "A game has already been started for this workspace. Would you like to keep playing or cancel the game?",
                 emoji: true
             }
         },
@@ -31,9 +22,9 @@ module.exports = {
                     type: "button",
                     text: {
                         type: "plain_text",
-                        text: "Start Game"
+                        text: "Continue playing"
                     },
-                    value: "startGame",
+                    value: "continueGame",
                     style: "primary"
                 },
                 {

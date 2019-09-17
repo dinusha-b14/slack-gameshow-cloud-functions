@@ -5,8 +5,10 @@
  * @description An index of all messages used within the app.
  */
 
-const welcomeMessage = require('./welcomeMessage');
+const welcome = require('./welcome');
+const gameAlreadyStarted = require('./gameAlreadyStarted');
 
 module.exports = {
-    welcomeMessage
+    welcome,
+    gameAlreadyStarted
 };
