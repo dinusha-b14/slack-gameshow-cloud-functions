@@ -7,8 +7,14 @@
 
 const welcome = require('./welcome');
 const gameAlreadyStarted = require('./gameAlreadyStarted');
+const buzzer = require('./buzzer');
+const cancelGame = require('./cancelGame');
+const gameStarted = require('./gameStarted');
 
 module.exports = {
     welcome,
-    gameAlreadyStarted
+    gameAlreadyStarted,
+    buzzer,
+    cancelGame,
+    gameStarted
 };

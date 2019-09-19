@@ -5,7 +5,7 @@ const nock = require('nock');
 const axios = require('axios');
 const { expect } = require('chai');
 const { Firestore } = require('@google-cloud/firestore');
-const startPost = require('../start');
+const start = require('../start');
 const config = require('../config');
 const { welcome, gameAlreadyStarted } = require('../messages');
 
@@ -15,34 +15,36 @@ const teamId = 'my-team-id';
 const channelId = 'my-channel-id';
 const createdUserId = 'my-created-user-id';
 
+const sandbox = sinon.createSandbox();
+
 const mockResponse = () => {
     const res = {};
-    res.status = sinon.stub().returns(res);
-    res.end = sinon.stub().returns(res);
+    res.status = sandbox.stub().returns(res);
+    res.end = sandbox.stub().returns(res);
     return res;
 };
 
-let axiosSpyPost;
+describe('POST /startPost', () => {
+    let axiosSpyPost;
 
-beforeEach(() => {
-    axiosSpyPost = sinon.spy(axios, 'post');
-});
+    beforeEach(() => {
+        axiosSpyPost = sandbox.spy(axios, 'post');
+    });
 
-afterEach(() => {
-    nock.cleanAll();
-    sinon.restore();
-});
+    afterEach(() => {
+        nock.cleanAll();
+        sandbox.restore();
+    });
 
-describe('POST /start', () => {
     describe('when verification token is invalid', () => {
         const req = { body: { token: 'some-invalid-token' } };
         const res = mockResponse();
 
         it('responds with a status of 403', async () => {
-            await startPost(req, res);
+            await start(req, res);
 
-            sinon.assert.calledWith(res.status, 403);
-            sinon.assert.calledWith(res.end, 'Forbidden');
+            sandbox.assert.calledWith(res.status, 403);
+            sandbox.assert.calledWith(res.end, 'Forbidden');
         });
     });
 
@@ -73,17 +75,18 @@ describe('POST /start', () => {
                     .reply(200);
             });
             const res = mockResponse();
+
     
             it('responds with a status of 200 and sets up the game', async () => {
-                await startPost(req, res);
+                await start(req, res);
     
                 const documentRef = firestore.doc(`games/${teamId}`);
                 const document = await documentRef.get();
                 const documentData = document.data();
 
-                sinon.assert.calledWith(res.status, 200);
-                sinon.assert.calledOnce(res.end);
-                sinon.assert.calledWith(axiosSpyPost, `${responseUrlBasePath}/response-url`, welcome);
+                sandbox.assert.calledWith(res.status, 200);
+                sandbox.assert.calledOnce(res.end);
+                sandbox.assert.calledWith(axiosSpyPost, `${responseUrlBasePath}/response-url`, welcome);
 
                 expect(documentData.teamId).to.equal(teamId);
                 expect(documentData.channelId).to.equal(channelId);
@@ -107,11 +110,11 @@ describe('POST /start', () => {
             const res = mockResponse();
 
             it('responds with a status of 200 and sends an already started message', async () => {
-                await startPost(req, res);
+                await start(req, res);
 
-                sinon.assert.calledWith(res.status, 200);
-                sinon.assert.calledOnce(res.end);
-                sinon.assert.calledWith(axiosSpyPost, `${responseUrlBasePath}/response-url`, gameAlreadyStarted);
+                sandbox.assert.calledWith(res.status, 200);
+                sandbox.assert.calledOnce(res.end);
+                sandbox.assert.calledWith(axiosSpyPost, `${responseUrlBasePath}/response-url`, gameAlreadyStarted);
             });
         });
     });
