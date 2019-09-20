@@ -32,7 +32,8 @@ module.exports = async (req, res) => {
             await documentRef.create({
                 teamId,
                 channelId,
-                createdUserId
+                createdUserId,
+                scores: {}
             });
 
             await axios.post(responseUrl, welcome);

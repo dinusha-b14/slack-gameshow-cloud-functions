@@ -91,6 +91,7 @@ describe('POST /startPost', () => {
                 expect(documentData.teamId).to.equal(teamId);
                 expect(documentData.channelId).to.equal(channelId);
                 expect(documentData.createdUserId).to.equal(createdUserId);
+                expect(documentData.scores).to.eql({});
             });
         });
         
@@ -104,7 +105,8 @@ describe('POST /startPost', () => {
                 await documentRef.create({
                     teamId,
                     channelId,
-                    createdUserId
+                    createdUserId,
+                    scores: {}
                 });
             });
             const res = mockResponse();

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "functions-framework --target=startPost",
-    "test": "NODE_ENV=test mocha --exit"
+    "test": "NODE_ENV=test mocha --timeout=5000 --exit"
   },
   "keywords": [
     "gameshow"
