@@ -10,11 +10,15 @@ const gameAlreadyStarted = require('./gameAlreadyStarted');
 const buzzer = require('./buzzer');
 const cancelGame = require('./cancelGame');
 const gameStarted = require('./gameStarted');
+const buzzedNotificationForContestant = require('./buzzedNotificationForContestant');
+const buzzedNotificationForHost = require('./buzzedNotificationForHost');
 
 module.exports = {
     welcome,
     gameAlreadyStarted,
     buzzer,
     cancelGame,
-    gameStarted
+    gameStarted,
+    buzzedNotificationForContestant,
+    buzzedNotificationForHost
 };

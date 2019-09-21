@@ -2,8 +2,8 @@
 
 const axios = require('axios');
 const { Firestore } = require('@google-cloud/firestore');
-const { buzzer, cancelGame: cancelGameMessage, gameStarted } = require('./messages');
-const { verificationToken, botUserAccessToken, postMessageUrl } = require('./config');
+const { buzzer, cancelGame: cancelGameMessage, gameStarted, buzzedNotificationForContestant, buzzedNotificationForHost } = require('./messages');
+const { verificationToken, botUserAccessToken, postMessageUrl, postEphemeralMessageUrl } = require('./config');
 
 /**
  * @module action
@@ -15,16 +15,17 @@ const firestore = new Firestore();
 const startGame = async payload => {
     const { response_url: responseUrl, channel: { id: channel } } = payload;
 
-    await axios.post(postMessageUrl, {
-        channel,
-        ...buzzer
-    }, {
-        headers: {
-            'Authorization': `Bearer ${botUserAccessToken}`
-        }
-    });
-
-    return axios.post(responseUrl, gameStarted);
+    return Promise.all([
+        axios.post(postMessageUrl, {
+            channel,
+            ...buzzer
+        }, {
+            headers: {
+                'Authorization': `Bearer ${botUserAccessToken}`
+            }
+        }),
+        axios.post(responseUrl, gameStarted)
+    ]);
 };
 
 const cancelGame = async payload => {
@@ -39,9 +40,37 @@ const cancelGame = async payload => {
     return axios.post(responseUrl, cancelGameMessage);
 };
 
+const buzz = async payload => {
+    const { response_url: responseUrl, user: { id: userId }, team: { id: teamId }, channel: { id: channel } } = payload;
+
+    const docRef = firestore.doc(`games/${teamId}`);
+    const doc = await docRef.get();
+    const { createdUserId, buzzedUser } = doc.data();
+
+    if (!buzzedUser) {
+        await docRef.update({
+            buzzedUser: userId
+        });
+    
+        return Promise.all([
+            axios.post(postEphemeralMessageUrl, {
+                channel,
+                user: createdUserId,
+                ...buzzedNotificationForHost(userId)
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${botUserAccessToken}`
+                }
+            }),
+            axios.post(responseUrl, buzzedNotificationForContestant(userId))
+        ]);
+    }
+}
+
 const actionMap = {
     startGame,
-    cancelGame
+    cancelGame,
+    buzz
 };
 
 /**

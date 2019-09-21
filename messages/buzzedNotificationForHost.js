@@ -1,0 +1,39 @@
+'use strict';
+
+module.exports = userId => (
+    {
+        blocks: [
+            {
+                type: 'section',
+                text: {
+                    type: 'plain_text',
+                    text: `<@${userId}> buzzed first! Did they get it right?`,
+                    emoji: true
+                }
+            },
+            {
+                type: "actions",
+                elements: [
+                    {
+                        type: "button",
+                        text: {
+                            type: "plain_text",
+                            text: "Yes"
+                        },
+                        value: "answerCorrect",
+                        style: "primary"
+                    },
+                    {
+                        type: "button",
+                        text: {
+                            type: "plain_text",
+                            text: "No"
+                        },
+                        value: "answerWrong",
+                        style: "danger"
+                    }
+                ]
+            }
+        ]
+    }
+);

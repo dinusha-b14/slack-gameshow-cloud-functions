@@ -17,18 +17,18 @@ const createdUserId = 'my-created-user-id';
 
 const sandbox = sinon.createSandbox();
 
-const mockResponse = () => {
-    const res = {};
-    res.status = sandbox.stub().returns(res);
-    res.end = sandbox.stub().returns(res);
-    return res;
-};
-
 describe('POST /startPost', () => {
-    let axiosSpyPost;
+    let axiosSpyPost, res;
+    const mockResponse = () => {
+        const res = {};
+        res.status = sandbox.stub().returns(res);
+        res.end = sandbox.stub().returns(res);
+        return res;
+    };
 
     beforeEach(() => {
         axiosSpyPost = sandbox.spy(axios, 'post');
+        res = mockResponse();
     });
 
     afterEach(() => {
@@ -38,7 +38,6 @@ describe('POST /startPost', () => {
 
     describe('when verification token is invalid', () => {
         const req = { body: { token: 'some-invalid-token' } };
-        const res = mockResponse();
 
         it('responds with a status of 403', async () => {
             await start(req, res);
@@ -74,8 +73,6 @@ describe('POST /startPost', () => {
                     .post('/response-url', welcome)
                     .reply(200);
             });
-            const res = mockResponse();
-
     
             it('responds with a status of 200 and sets up the game', async () => {
                 await start(req, res);
@@ -109,7 +106,7 @@ describe('POST /startPost', () => {
                     scores: {}
                 });
             });
-            const res = mockResponse();
+
 
             it('responds with a status of 200 and sends an already started message', async () => {
                 await start(req, res);
