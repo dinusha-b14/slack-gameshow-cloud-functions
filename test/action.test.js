@@ -330,7 +330,7 @@ describe('POST /actionPost', () => {
                                 {
                                     type: "section",
                                     text: {
-                                        type: "plain_text",
+                                        type: "mrkdwn",
                                         text: `<@${buzzedUserId}> buzzed first!`,
                                         emoji: true
                                     }
@@ -351,7 +351,7 @@ describe('POST /actionPost', () => {
                                 {
                                     type: 'section',
                                     text: {
-                                        type: 'plain_text',
+                                        type: 'mrkdwn',
                                         text: `<@${buzzedUserId}> buzzed first! Did they get it right?`,
                                         emoji: true
                                     }
@@ -399,7 +399,7 @@ describe('POST /actionPost', () => {
                             {
                                 type: "section",
                                 text: {
-                                    type: "plain_text",
+                                    type: "mrkdwn",
                                     text: `<@${buzzedUserId}> buzzed first!`,
                                     emoji: true
                                 }
@@ -413,7 +413,7 @@ describe('POST /actionPost', () => {
                             {
                                 type: 'section',
                                 text: {
-                                    type: 'plain_text',
+                                    type: 'mrkdwn',
                                     text: `<@${buzzedUserId}> buzzed first! Did they get it right?`,
                                     emoji: true
                                 }

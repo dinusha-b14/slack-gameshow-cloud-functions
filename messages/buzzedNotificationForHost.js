@@ -6,7 +6,7 @@ module.exports = userId => (
             {
                 type: 'section',
                 text: {
-                    type: 'plain_text',
+                    type: 'mrkdwn',
                     text: `<@${userId}> buzzed first! Did they get it right?`,
                     emoji: true
                 }
