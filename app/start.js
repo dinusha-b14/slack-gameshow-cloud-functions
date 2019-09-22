@@ -2,8 +2,8 @@
 
 const axios = require('axios');
 const { Firestore } = require('@google-cloud/firestore');
-const { verificationToken } = require('./config');
-const { welcome, gameAlreadyStarted } = require('./messages');
+const { verificationToken } = require('../config');
+const { welcome, gameAlreadyStarted } = require('../messages');
 
 /**
  * @module start

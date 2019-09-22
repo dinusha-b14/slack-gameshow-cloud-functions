@@ -5,7 +5,7 @@ const nock = require('nock');
 const axios = require('axios');
 const { expect } = require('chai');
 const { Firestore } = require('@google-cloud/firestore');
-const action = require('../action');
+const action = require('../app/action');
 const { verificationToken, botUserAccessToken, postEphemeralMessageUrl } = require('../config');
 
 const firestore = new Firestore();

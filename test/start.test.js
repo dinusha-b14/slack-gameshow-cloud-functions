@@ -5,7 +5,7 @@ const nock = require('nock');
 const axios = require('axios');
 const { expect } = require('chai');
 const { Firestore } = require('@google-cloud/firestore');
-const start = require('../start');
+const start = require('../app/start');
 const config = require('../config');
 const { welcome, gameAlreadyStarted } = require('../messages');
 

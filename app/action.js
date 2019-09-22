@@ -2,8 +2,8 @@
 
 const axios = require('axios');
 const { Firestore } = require('@google-cloud/firestore');
-const { buzzer, cancelGame: cancelGameMessage, gameStarted, buzzedNotificationForContestant, buzzedNotificationForHost } = require('./messages');
-const { verificationToken, botUserAccessToken, postMessageUrl, postEphemeralMessageUrl } = require('./config');
+const { buzzer, cancelGame: cancelGameMessage, gameStarted, buzzedNotificationForContestant, buzzedNotificationForHost } = require('../messages');
+const { verificationToken, botUserAccessToken, postMessageUrl, postEphemeralMessageUrl } = require('../config');
 
 /**
  * @module action
