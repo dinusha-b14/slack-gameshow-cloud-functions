@@ -5,11 +5,10 @@ module.exports = userId => (
         replace_original: true,
         blocks: [
             {
-                type: "section",
+                type: 'section',
                 text: {
-                    type: "mrkdwn",
-                    text: `<@${userId}> buzzed first!`,
-                    emoji: true
+                    type: 'mrkdwn',
+                    text: `<@${userId}> buzzed first!`
                 }
             }
         ]

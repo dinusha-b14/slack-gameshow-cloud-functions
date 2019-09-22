@@ -11,17 +11,15 @@ module.exports = {
         {
             type: "section",
             text: {
-                type: "plain_text",
-                text: "Welcome to Gameshow! The app that allows you to host your very own quiz show!",
-                emoji: true
+                type: "mrkdwn",
+                text: "Welcome to Gameshow! The app that allows you to host your very own quiz show!"
             }
         },
         {
             type: "section",
             text: {
-                type: "plain_text",
-                text: "Click the Start Game button below to start the game with everyone in this channel!",
-                emoji: true
+                type: "mrkdwn",
+                text: "Click the Start Game button below to start the game with everyone in this channel!"
             }
         },
         {

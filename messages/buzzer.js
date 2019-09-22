@@ -10,9 +10,8 @@ module.exports = {
         {
             type: 'section',
             text: {
-                type: 'plain_text',
-                text: 'Get ready to answer the next question!',
-                emoji: true
+                type: 'mrkdwn',
+                text: 'Get ready to answer the next question!'
             }
         },
         {

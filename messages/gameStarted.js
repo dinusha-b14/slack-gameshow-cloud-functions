@@ -11,9 +11,8 @@ module.exports = {
         {
             type: "section",
             text: {
-                type: "plain_text",
-                text: "Game started!",
-                emoji: true
+                type: "mrkdwn",
+                text: "Game started!"
             }
         }
     ]

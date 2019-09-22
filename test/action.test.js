@@ -77,9 +77,8 @@ describe('POST /actionPost', () => {
                             {
                                 type: "section",
                                 text: {
-                                    type: "plain_text",
-                                    text: "Game started!",
-                                    emoji: true
+                                    type: "mrkdwn",
+                                    text: "Game started!"
                                 }
                             }
                         ]
@@ -93,9 +92,8 @@ describe('POST /actionPost', () => {
                             {
                                 type: 'section',
                                 text: {
-                                    type: 'plain_text',
-                                    text: 'Get ready to answer the next question!',
-                                    emoji: true
+                                    type: 'mrkdwn',
+                                    text: 'Get ready to answer the next question!'
                                 }
                             },
                             {
@@ -149,9 +147,8 @@ describe('POST /actionPost', () => {
                         {
                             type: 'section',
                             text: {
-                                type: 'plain_text',
-                                text: 'Get ready to answer the next question!',
-                                emoji: true
+                                type: 'mrkdwn',
+                                text: 'Get ready to answer the next question!'
                             }
                         },
                         {
@@ -181,9 +178,8 @@ describe('POST /actionPost', () => {
                         {
                             type: "section",
                             text: {
-                                type: "plain_text",
-                                text: "Game started!",
-                                emoji: true
+                                type: "mrkdwn",
+                                text: "Game started!"
                             }
                         }
                     ]
@@ -220,9 +216,8 @@ describe('POST /actionPost', () => {
                             {
                                 type: "section",
                                 text: {
-                                    type: "plain_text",
-                                    text: "Game cancelled!",
-                                    emoji: true
+                                    type: "mrkdwn",
+                                    text: "Game cancelled!"
                                 }
                             }
                         ]
@@ -254,9 +249,8 @@ describe('POST /actionPost', () => {
                             {
                                 type: "section",
                                 text: {
-                                    type: "plain_text",
-                                    text: "Game cancelled!",
-                                    emoji: true
+                                    type: "mrkdwn",
+                                    text: "Game cancelled!"
                                 }
                             }
                         ]
@@ -276,9 +270,8 @@ describe('POST /actionPost', () => {
                             {
                                 type: "section",
                                 text: {
-                                    type: "plain_text",
-                                    text: "Game cancelled!",
-                                    emoji: true
+                                    type: "mrkdwn",
+                                    text: "Game cancelled!"
                                 }
                             }
                         ]
@@ -331,8 +324,7 @@ describe('POST /actionPost', () => {
                                     type: "section",
                                     text: {
                                         type: "mrkdwn",
-                                        text: `<@${buzzedUserId}> buzzed first!`,
-                                        emoji: true
+                                        text: `<@${buzzedUserId}> buzzed first!`
                                     }
                                 }
                             ]
@@ -352,8 +344,7 @@ describe('POST /actionPost', () => {
                                     type: 'section',
                                     text: {
                                         type: 'mrkdwn',
-                                        text: `<@${buzzedUserId}> buzzed first! Did they get it right?`,
-                                        emoji: true
+                                        text: `<@${buzzedUserId}> buzzed first! Did they get it right?`
                                     }
                                 },
                                 {
@@ -400,8 +391,7 @@ describe('POST /actionPost', () => {
                                 type: "section",
                                 text: {
                                     type: "mrkdwn",
-                                    text: `<@${buzzedUserId}> buzzed first!`,
-                                    emoji: true
+                                    text: `<@${buzzedUserId}> buzzed first!`
                                 }
                             }
                         ]
@@ -414,8 +404,7 @@ describe('POST /actionPost', () => {
                                 type: 'section',
                                 text: {
                                     type: 'mrkdwn',
-                                    text: `<@${buzzedUserId}> buzzed first! Did they get it right?`,
-                                    emoji: true
+                                    text: `<@${buzzedUserId}> buzzed first! Did they get it right?`
                                 }
                             },
                             {

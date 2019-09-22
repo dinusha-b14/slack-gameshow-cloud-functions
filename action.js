@@ -15,17 +15,16 @@ const firestore = new Firestore();
 const startGame = async payload => {
     const { response_url: responseUrl, channel: { id: channel } } = payload;
 
-    return Promise.all([
-        axios.post(postMessageUrl, {
-            channel,
-            ...buzzer
-        }, {
-            headers: {
-                'Authorization': `Bearer ${botUserAccessToken}`
-            }
-        }),
-        axios.post(responseUrl, gameStarted)
-    ]);
+    axios.post(postMessageUrl, {
+        channel,
+        ...buzzer
+    }, {
+        headers: {
+            'Authorization': `Bearer ${botUserAccessToken}`
+        }
+    });
+
+    return axios.post(responseUrl, gameStarted);
 };
 
 const cancelGame = async payload => {
@@ -52,18 +51,17 @@ const buzz = async payload => {
             buzzedUser: userId
         });
     
-        return Promise.all([
-            axios.post(postEphemeralMessageUrl, {
-                channel,
-                user: createdUserId,
-                ...buzzedNotificationForHost(userId)
-            }, {
-                headers: {
-                    'Authorization': `Bearer ${botUserAccessToken}`
-                }
-            }),
-            axios.post(responseUrl, buzzedNotificationForContestant(userId))
-        ]);
+        await axios.post(postEphemeralMessageUrl, {
+            channel,
+            user: createdUserId,
+            ...buzzedNotificationForHost(userId)
+        }, {
+            headers: {
+                'Authorization': `Bearer ${botUserAccessToken}`
+            }
+        });
+
+        return axios.post(responseUrl, buzzedNotificationForContestant(userId));
     }
 }
 
@@ -92,7 +90,11 @@ module.exports = async (req, res) => {
         const responseAction = actionMap[actionValue];
 
         if (responseAction) {
-            await responseAction(payload);
+            try {
+                await responseAction(payload);
+            } catch(err) {
+                console.log(err);
+            }
         }
     }
 };

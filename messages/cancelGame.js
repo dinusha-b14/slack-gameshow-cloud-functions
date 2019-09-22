@@ -9,11 +9,10 @@ module.exports = {
     replace_original: true,
     blocks: [
         {
-            type: "section",
+            type: 'section',
             text: {
-                type: "plain_text",
-                text: "Game cancelled!",
-                emoji: true
+                type: 'mrkdwn',
+                text: 'Game cancelled!'
             }
         }
     ]

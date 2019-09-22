@@ -10,9 +10,8 @@ module.exports = {
         {
             type: "section",
             text: {
-                type: "plain_text",
-                text: "A game has already been started for this workspace. Would you like to keep playing or cancel the game?",
-                emoji: true
+                type: "mrkdwn",
+                text: "A game has already been started for this workspace. Would you like to keep playing or cancel the game?"
             }
         },
         {
