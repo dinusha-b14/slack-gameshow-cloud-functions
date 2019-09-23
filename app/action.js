@@ -71,11 +71,32 @@ const answerCorrect = async payload => {
     return axios.post(responseUrl, messages.answerCorrectPointsAllocation);
 };
 
+const answerWrong = async payload => {
+    const { response_url: responseUrl, team: { id: teamId }, channel: { id: channel } } = payload;
+
+    const docRef = firestore.doc(`games/${teamId}`);
+    await docRef.update({
+        buzzedUser: null
+    });
+
+    await axios.post(config.postMessageUrl, {
+        channel,
+        ...messages.buzzer
+    }, {
+        headers: {
+            'Authorization': `Bearer ${config.botUserAccessToken}`
+        }
+    });
+
+    return axios.post(responseUrl, messages.buzzerReEnabled);
+};
+
 const actionMap = {
     startGame,
     cancelGame,
     buzz,
-    answerCorrect
+    answerCorrect,
+    answerWrong
 };
 
 /**

@@ -6,7 +6,7 @@ const axios = require('axios');
 const { expect } = require('chai');
 const { Firestore } = require('@google-cloud/firestore');
 const action = require('../app/action');
-const { verificationToken, botUserAccessToken, postEphemeralMessageUrl } = require('../config');
+const { verificationToken, botUserAccessToken, postEphemeralMessageUrl, postMessageUrl } = require('../config');
 
 const firestore = new Firestore();
 const responseUrlBasePath = 'https://response.url.com';
@@ -628,6 +628,137 @@ describe('POST /actionPost', () => {
                         }
                     ]
                 });
+            });
+        });
+
+        describe('when actionValue is answerWrong', () => {
+            const req = {
+                body: {
+                    payload: JSON.stringify({
+                        token: verificationToken,
+                        response_url: responseUrl,
+                        team: {
+                            id: teamId
+                        },
+                        channel: {
+                            id: channelId
+                        },
+                        actions: [
+                            {
+                                value: 'answerWrong'
+                            }
+                        ]
+                    })
+                }
+            };
+
+            beforeEach(async () => {
+                const documentRef = firestore.doc(`games/${teamId}`);
+                await documentRef.create({
+                    teamId,
+                    channelId,
+                    createdUserId,
+                    scores: {},
+                    buzzedUser: 'some-user-id'
+                });
+
+                nock(responseUrlBasePath)
+                    .post('/response-url', {
+                        replace_original: true,
+                        blocks: [
+                            {
+                                type: "section",
+                                text: {
+                                    type: "mrkdwn",
+                                    text: "Buzzer Re-enabled!"
+                                }
+                            }
+                        ]
+                    })
+                    .reply(200);
+
+                nock('https://slack.com/api/chat.postMessage')
+                    .post('', {
+                        channel: channelId,
+                        blocks: [
+                            {
+                                type: 'section',
+                                text: {
+                                    type: 'mrkdwn',
+                                    text: 'Get ready to answer the next question!'
+                                }
+                            },
+                            {
+                                type: 'actions',
+                                elements: [
+                                    {
+                                        type: 'button',
+                                        text: {
+                                            type: 'plain_text',
+                                            text: 'Buzz!!'
+                                        },
+                                        value: 'buzz',
+                                        style: 'primary'
+                                    }
+                                ]
+                            }
+                        ]
+                    })
+                    .reply(200);
+            });
+
+            it('responds with 200 OK and resends buzzers back to all users', async () => {
+                await action(req, res);
+
+                const docRef = firestore.doc(`games/${teamId}`);
+                const doc = await docRef.get();
+                const docData = doc.data();
+
+                sandbox.assert.calledWith(res.status, 200);
+                sandbox.assert.calledOnce(res.end);
+                sandbox.assert.calledWith(axiosSpyPost, responseUrl, {
+                    replace_original: true,
+                    blocks: [
+                        {
+                            type: "section",
+                            text: {
+                                type: "mrkdwn",
+                                text: "Buzzer Re-enabled!"
+                            }
+                        }
+                    ]
+                });
+                sandbox.assert.calledWith(axiosSpyPost, postMessageUrl, {
+                    channel: channelId,
+                    blocks: [
+                        {
+                            type: 'section',
+                            text: {
+                                type: 'mrkdwn',
+                                text: 'Get ready to answer the next question!'
+                            }
+                        },
+                        {
+                            type: 'actions',
+                            elements: [
+                                {
+                                    type: 'button',
+                                    text: {
+                                        type: 'plain_text',
+                                        text: 'Buzz!!'
+                                    },
+                                    value: 'buzz',
+                                    style: 'primary'
+                                }
+                            ]
+                        }
+                    ]
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${botUserAccessToken}`
+                    }
+                });
+                expect(docData.buzzedUser).to.equal(null);
             });
         });
     });
