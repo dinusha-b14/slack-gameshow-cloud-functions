@@ -12,6 +12,7 @@ const cancelGame = require('./cancelGame');
 const gameStarted = require('./gameStarted');
 const buzzedNotificationForContestant = require('./buzzedNotificationForContestant');
 const buzzedNotificationForHost = require('./buzzedNotificationForHost');
+const answerCorrectPointsAllocation = require('./answerCorrectPointsAllocation');
 
 module.exports = {
     welcome,
@@ -20,5 +21,6 @@ module.exports = {
     cancelGame,
     gameStarted,
     buzzedNotificationForContestant,
-    buzzedNotificationForHost
+    buzzedNotificationForHost,
+    answerCorrectPointsAllocation
 };

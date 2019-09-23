@@ -2,8 +2,8 @@
 
 const axios = require('axios');
 const { Firestore } = require('@google-cloud/firestore');
-const { buzzer, cancelGame: cancelGameMessage, gameStarted, buzzedNotificationForContestant, buzzedNotificationForHost } = require('../messages');
-const { verificationToken, botUserAccessToken, postMessageUrl, postEphemeralMessageUrl } = require('../config');
+const messages = require('../messages');
+const config = require('../config');
 
 /**
  * @module action
@@ -15,16 +15,16 @@ const firestore = new Firestore();
 const startGame = async payload => {
     const { response_url: responseUrl, channel: { id: channel } } = payload;
 
-    axios.post(postMessageUrl, {
+    axios.post(config.postMessageUrl, {
         channel,
-        ...buzzer
+        ...messages.buzzer
     }, {
         headers: {
-            'Authorization': `Bearer ${botUserAccessToken}`
+            'Authorization': `Bearer ${config.botUserAccessToken}`
         }
     });
 
-    return axios.post(responseUrl, gameStarted);
+    return axios.post(responseUrl, messages.gameStarted);
 };
 
 const cancelGame = async payload => {
@@ -36,7 +36,7 @@ const cancelGame = async payload => {
         console.log(err);
     }
 
-    return axios.post(responseUrl, cancelGameMessage);
+    return axios.post(responseUrl, messages.cancelGame);
 };
 
 const buzz = async payload => {
@@ -51,24 +51,31 @@ const buzz = async payload => {
             buzzedUser: userId
         });
     
-        await axios.post(postEphemeralMessageUrl, {
+        await axios.post(config.postEphemeralMessageUrl, {
             channel,
             user: createdUserId,
-            ...buzzedNotificationForHost(userId)
+            ...messages.buzzedNotificationForHost(userId)
         }, {
             headers: {
-                'Authorization': `Bearer ${botUserAccessToken}`
+                'Authorization': `Bearer ${config.botUserAccessToken}`
             }
         });
 
-        return axios.post(responseUrl, buzzedNotificationForContestant(userId));
+        return axios.post(responseUrl, messages.buzzedNotificationForContestant(userId));
     }
 }
+
+const answerCorrect = async payload => {
+    const { response_url: responseUrl } = payload;
+
+    return axios.post(responseUrl, messages.answerCorrectPointsAllocation);
+};
 
 const actionMap = {
     startGame,
     cancelGame,
-    buzz
+    buzz,
+    answerCorrect
 };
 
 /**
@@ -82,7 +89,7 @@ module.exports = async (req, res) => {
     const { token, actions } = payload;
     const [{ value: actionValue }] =  actions;
 
-    if (token !== verificationToken) {
+    if (token !== config.verificationToken) {
         res.status(403).end('Forbidden');
     } else {
         res.status(200).end();

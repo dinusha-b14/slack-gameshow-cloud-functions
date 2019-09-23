@@ -488,5 +488,147 @@ describe('POST /actionPost', () => {
                 });
             });
         });
+
+        describe('when actionValue is answerCorrect', () => {
+            const req = {
+                body: {
+                    payload: JSON.stringify({
+                        token: verificationToken,
+                        response_url: responseUrl,
+                        actions: [
+                            {
+                                value: 'answerCorrect'
+                            }
+                        ]
+                    })
+                }
+            };
+
+            beforeEach(async () => {
+                nock(responseUrlBasePath)
+                    .post('/response-url', {
+                        replace_original: true,
+                        blocks: [
+                            {
+                                type: 'section',
+                                text: {
+                                    type: 'plain_text',
+                                    text: 'How many points would you like to award them?'
+                                },
+                                accessory: {
+                                    action_id: 'addScoreForContestant',
+                                    type: 'static_select',
+                                    placeholder: {
+                                        type: 'plain_text',
+                                        text: 'Select a score'
+                                    },
+                                    options: [
+                                        {
+                                            text: {
+                                                type: 'plain_text',
+                                                text: '1'
+                                            },
+                                            value: '1'
+                                        },
+                                        {
+                                            text: {
+                                                type: 'plain_text',
+                                                text: '2'
+                                            },
+                                            value: '2'
+                                        },
+                                        {
+                                            text: {
+                                                type: 'plain_text',
+                                                text: '3'
+                                            },
+                                            value: '3'
+                                        },
+                                        {
+                                            text: {
+                                                type: 'plain_text',
+                                                text: '4'
+                                            },
+                                            value: '4'
+                                        },
+                                        {
+                                            text: {
+                                                type: 'plain_text',
+                                                text: '5'
+                                            },
+                                            value: '5'
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    })
+                    .reply(200);
+            });
+
+            it('responds with 200 OK and sends a points selection message back to the host', async () => {
+                await action(req, res);
+
+                sandbox.assert.calledWith(res.status, 200);
+                sandbox.assert.calledOnce(res.end);
+                sandbox.assert.calledWith(axiosSpyPost, responseUrl, {
+                    replace_original: true,
+                    blocks: [
+                        {
+                            type: 'section',
+                            text: {
+                                type: 'plain_text',
+                                text: 'How many points would you like to award them?'
+                            },
+                            accessory: {
+                                action_id: 'addScoreForContestant',
+                                type: 'static_select',
+                                placeholder: {
+                                    type: 'plain_text',
+                                    text: 'Select a score'
+                                },
+                                options: [
+                                    {
+                                        text: {
+                                            type: 'plain_text',
+                                            text: '1'
+                                        },
+                                        value: '1'
+                                    },
+                                    {
+                                        text: {
+                                            type: 'plain_text',
+                                            text: '2'
+                                        },
+                                        value: '2'
+                                    },
+                                    {
+                                        text: {
+                                            type: 'plain_text',
+                                            text: '3'
+                                        },
+                                        value: '3'
+                                    },
+                                    {
+                                        text: {
+                                            type: 'plain_text',
+                                            text: '4'
+                                        },
+                                        value: '4'
+                                    },
+                                    {
+                                        text: {
+                                            type: 'plain_text',
+                                            text: '5'
+                                        },
+                                        value: '5'
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                });
+            });
+        });
     });
 });
